@@ -1,6 +1,6 @@
+import { useEffect } from 'react';
 import { Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
 import Background from './components/Background.jsx';
@@ -18,15 +18,14 @@ import NotFound from './pages/NotFound.jsx';
 
 function Layout() {
   const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
   return (
     <div className="relative flex min-h-screen flex-col overflow-x-hidden">
       <Background />
       <Navbar />
-      <AnimatePresence mode="wait">
-        <motion.main key={pathname} className="flex-1" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
-          <Outlet />
-        </motion.main>
-      </AnimatePresence>
+      <main key={pathname} className="page-enter flex-1">
+        <Outlet />
+      </main>
       <Footer />
       <Toaster position="top-center" toastOptions={{ style: { borderRadius: '999px', padding: '10px 18px', fontWeight: 600 } }} />
     </div>
